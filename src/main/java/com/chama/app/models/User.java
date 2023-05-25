@@ -1,6 +1,7 @@
 package com.chama.app.models;
 
 import com.chama.app.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,13 +29,22 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String phone;
+    @JsonIgnore
     private String password;
     private int savings;
+
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name = "goal_id",
+            referencedColumnName = "id"
+    )
+    private Goal goal;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
